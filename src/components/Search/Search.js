@@ -11,7 +11,6 @@ function Search() {
         let url = `https://api.giphy.com/v1/gifs/search?api_key=${APIkey}&limit=10&q=`
         
         url = url.concat(searchInput)
-
         await axios.get(url)
         .then((response)=>{
             const data = response.data.data.map(obj => obj);
