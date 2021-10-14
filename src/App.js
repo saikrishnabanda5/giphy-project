@@ -6,7 +6,7 @@ import Search from './components/Search/Search'
 
 function App() {
   return (
-    <div>
+    <div className="giphy-app">
       <Search />
       <GiphyPage />
     </div>

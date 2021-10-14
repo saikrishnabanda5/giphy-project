@@ -1,35 +1,51 @@
-import React,{useState} from 'react'
-import axios from 'axios';
-
+import React,{useState,useEffect} from 'react'
+import { useBetween } from 'use-between';
+import useShareableState from '../useShareableState/useShareableState';
+import giphySearchAPI from '../../APIs/giphySearchAPI';
+import './index.css'
 function Search() {
 
-    const [searchInput, setsearchInput] = useState([])
-    const [data, setdata] = useState([])
+    const [searchInput, setsearchInput] = useState("")
+    const [errorMessage,setErrorMessage] = useState(false)
+    const {setstate,searchLimit,setShowLoadMoreForSearch} = useBetween(useShareableState);
 
-    let APIkey =  "YOD5a0FtB9uGJQwPPGH3WJYgKHJ0IiSS";
     const searchGetRequest = async ()=>{
-        let url = `https://api.giphy.com/v1/gifs/search?api_key=${APIkey}&limit=10&q=`
-        
-        url = url.concat(searchInput)
-        await axios.get(url)
-        .then((response)=>{
-            const data = response.data.data.map(obj => obj);
-            setdata(data)
-            })
-          .catch((error)=>{
-           console.log("erroe",error)
+        await giphySearchAPI(searchInput,searchLimit)
+          .then((response)=>{
+            setstate(response.data.data)
           })
-   }
+            .catch((error)=>{
+                console.log(error)
+            })
+        }
 
-   const onSearchGiphy = (e)=>{
-    console.log(e.target.value)
-    setsearchInput(e.target.value)
-    searchGetRequest()
- }
- 
-    return (
-        <input type="search" onChange={onSearchGiphy}/>
-    )
-}
+    const onSearchGiphy = (event)=>{
+         setsearchInput(event.target.value)
+        }
+
+    const handleKeyPress = (event)=>{
+        if(event.key === "Enter" && searchInput !==""){
+            setShowLoadMoreForSearch(true)
+            setErrorMessage(false)
+            searchGetRequest()
+        }
+        else if(searchInput === "" && event.key === "Enter"){
+            setErrorMessage(true)
+        }
+    }
+        
+        useEffect(() => {
+            searchGetRequest()
+        },[searchLimit])
+    
+    return (<div className="search-input">
+            <img className="giphy-image" src="https://res.cloudinary.com/dfxicv9iv/image/upload/v1634234561/800px-Giphy-logo.svg_vzuup2.png"/>
+            <div className="input-message">
+                <input type="text" className="search" placeholder="Type and press enter" onChange={onSearchGiphy} onKeyPress={handleKeyPress}/>
+                <span className="error-message">{errorMessage ? "Please type something": null} </span>
+            </div>
+            </div>
+        )
+    }
 
 export default Search
