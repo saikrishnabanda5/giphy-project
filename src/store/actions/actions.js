@@ -11,7 +11,7 @@ export const startRequest = (loadingStatus) => {
   export const receiveData = loadingStatus => {
     return {
       type: "RECEIVE_DATA",
-      loading:loadingStatus
+      loading:false
     };
   };
 
@@ -19,8 +19,6 @@ export const startRequest = (loadingStatus) => {
   export const failedData = failed => {
     return {
       type: "FAILED_DATA",
-      payload:{loading:false,
-                failed,
-                failedError:"Unable to get gifs.Please try agian"}
+      payload:{loading:false,failed,failedError:"Unable to get gifs.Please try agian"}
     };
   };
