@@ -34,7 +34,7 @@ function GiphyPage() {
             return state.map(item =>{
                 return (
                     <div key ={item.id}>
-                        <img className="giphy" src={item.images.downsized_still.url}/>
+                        <img className="giphy" src={item.images.downsized.url}/>
                     </div>
                 )
             })
