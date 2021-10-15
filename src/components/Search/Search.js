@@ -11,12 +11,11 @@ function Search() {
     const [searchInput, setsearchInput] = useState("")
     const [errorMessage,setErrorMessage] = useState(false)
     const {setstate,searchLimit,setShowLoadMoreForSearch} = useBetween(useShareableState);
-    const {failed,failedError,loading} = useSelector(state => state)
+    const {failed} = useSelector(state => state)
     const dispatch = useDispatch()
 
     const searchGetRequest = async ()=>{
         dispatch(startRequest(true));
-        console.log(searchLimit)
         await giphySearchAPI(searchInput,searchLimit)
           .then((response)=>{
             setstate(response.data.data)
@@ -47,7 +46,7 @@ function Search() {
         },[searchLimit])
     
     return (<div className="search-input">
-            <img className="giphy-image" src="https://res.cloudinary.com/dfxicv9iv/image/upload/v1634234561/800px-Giphy-logo.svg_vzuup2.png"/>
+            <img className="giphy-image" alt="giphy" src="https://res.cloudinary.com/dfxicv9iv/image/upload/v1634234561/800px-Giphy-logo.svg_vzuup2.png"/>
             <div className="input-message">
                 <input disabled={failed} type="text" className="search" placeholder="Type and press enter" onChange={onSearchGiphy} onKeyPress={handleKeyPress}/>
                 <span className="error-message">{errorMessage ? "Please type something": null} </span>

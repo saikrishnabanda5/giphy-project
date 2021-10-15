@@ -1,7 +1,6 @@
 
 
 export const startRequest = (loadingStatus) => {
-    console.log("loadingStatus",loadingStatus)
     return {
       type: "START_REQUEST",
       loading:loadingStatus
